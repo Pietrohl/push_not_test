@@ -1,7 +1,5 @@
 import { Prop, raw, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { Customer } from './customer.schema';
 export type SubscriptionDocument = Subscription & Document;
 
 @Schema()
@@ -15,13 +13,16 @@ export class Subscription {
       auth: { type: String },
     }),
   )
-  keys: Record<string, any>;
+  keys: Record<'p256dh' | 'auth', string>;
 
   @Prop()
   client: string;
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Customer' })
-  owner: Customer;
+  @Prop()
+  customer: string;
+
+  @Prop({ type: Date, required: true })
+  lastStatusNotification: Date;
 }
 
 export const SubscriptionSchema = SchemaFactory.createForClass(Subscription);

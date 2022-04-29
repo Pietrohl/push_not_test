@@ -1,14 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { Customer } from './customer.schema';
+import { CoinType, coinType } from '../../common/entity/coin.entity';
 
 export type OrderDocument = Order & Document;
 
 @Schema()
 export class Order {
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Order' })
-  owner: Customer;
+  @Prop()
+  id: string;
+
+  @Prop()
+  customer: string;
 
   @Prop({
     type: String,
@@ -23,9 +25,9 @@ export class Order {
   @Prop({
     type: String,
     required: true,
-    enum: ['bitcoin', 'etherium'],
+    enum: [...coinType],
   })
-  coin: string;
+  coin: keyof typeof CoinType;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

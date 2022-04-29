@@ -1,5 +1,6 @@
 import { Body, Controller, Post, Req, Res } from '@nestjs/common';
 import { Response, Request } from 'express';
+import { NotificationPayloadDTO } from './dto/notification-payload.dto';
 import { SubscriptionDTO } from './dto/subscription.dto';
 import { PushNotificationService } from './push-notification.service';
 
@@ -16,9 +17,9 @@ export class PushNotificationController {
     @Body() subscription: SubscriptionDTO,
   ) {
     res.status(201);
-    const payload = JSON.stringify({
+    const payload: NotificationPayloadDTO = {
       title: 'Test Push Notification Subscription',
-    });
+    };
     console.log(subscription);
     this.pushNotificationService.sendNotification(subscription, payload);
   }
